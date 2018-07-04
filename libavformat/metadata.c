@@ -60,6 +60,10 @@ void ff_metadata_conv_ctx(AVFormatContext *ctx, const AVMetadataConv *d_conv,
                                                 const AVMetadataConv *s_conv)
 {
     int i;
+    /* We pass those to all ff_metadata_conv calls below and it returns
+     * immediately if they are equal, so we can short-circuit. */
+    if (d_conv == s_conv)
+        return;
     ff_metadata_conv(&ctx->metadata, d_conv, s_conv);
     for (i=0; i<ctx->nb_streams ; i++)
         ff_metadata_conv(&ctx->streams [i]->metadata, d_conv, s_conv);
